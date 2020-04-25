@@ -1,5 +1,5 @@
 import './styles.css'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 import { rootReducer } from './redux/rootReducer';
@@ -12,7 +12,10 @@ const themeBtn = document.getElementById('theme');
 
 const store = createStore(
     rootReducer, 
-    applyMiddleware(thunk, logger)
+    compose(
+        applyMiddleware(thunk, logger),
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    ),
 );
 
 addBtn.addEventListener('click', () => {
@@ -27,19 +30,22 @@ asyncBtn.addEventListener('click', () => {
     store.dispatch(asyncIncrement())
 });
 
-store.subscribe(() => {
-    const state = store.getState();
-
-    counter.textContent = state.counter;
-    document.body.className = state.theme.value
-});
-
-store.dispatch({ type: "__INIT-APP__" })
-
 themeBtn.addEventListener('click', () => {
     const newTheme = document.body.classList.contains('light')
         ? 'dark' 
         : 'light'
     store.dispatch(changeTheme(newTheme))
 })
+
+
+store.subscribe(() => {
+    const state = store.getState();
+
+    counter.textContent = state.counter;
+    document.body.className = state.theme.value;
+    [addBtn, subBtn, themeBtn, asyncBtn].forEach((btn) => btn.disabled = state.theme.disabled )
+});
+
+store.dispatch({ type: "__INIT-APP__" })
+
 

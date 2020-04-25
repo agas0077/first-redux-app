@@ -1,4 +1,4 @@
-import { INCREMENT, DECREMENT, CHANGE_THEME } from './types'
+import { INCREMENT, DECREMENT, CHANGE_THEME, DISABLE_BTNS, ENABLE_BTNS } from './types'
 import { combineReducers } from 'redux';
 
 function counterReducer(state = 0, action) {
@@ -11,7 +11,8 @@ function counterReducer(state = 0, action) {
 }
 
 const initialThemeState = {
-    value: 'light'
+    value: 'light',
+    disabled: false,
 }
 
 function themeReducer(state = initialThemeState, action) {
@@ -19,6 +20,10 @@ function themeReducer(state = initialThemeState, action) {
         default: return state;
         case CHANGE_THEME: 
             return {...state, value: action.payload}
+        case DISABLE_BTNS:
+            return {...state, disabled: true}
+        case ENABLE_BTNS:
+            return {...state, disabled: false}
     }
 }
 
