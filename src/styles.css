@@ -21,3 +21,7 @@ body.dark .card {
   align-items: center;
   justify-content: space-between;
 }
+
+.btn { 
+  margin: 5px;
+}
