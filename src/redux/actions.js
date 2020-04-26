@@ -1,4 +1,4 @@
-import { INCREMENT, DECREMENT, RESET, ASYNC_MULTI, ASYNC_DIV, CHANGE_THEME } from "./types";
+import { INCREMENT, DECREMENT, RESET, ASYNC_MULTI, ASYNC_DIV, CHANGE_THEME, DISABLE_BUTTONS, ENABLE_BUTTONS } from "./types";
 
 export function increment() {
     return {
@@ -20,18 +20,21 @@ export function reset() {
 
 export function asyncMulti() {
     return function(dispatch) {
+        dispatch({ type: DISABLE_BUTTONS })
         setTimeout(() => {
-            dispatch({ })
-            return dispatch({ type: ASYNC_MULTI })
-        }, 1000)
+            dispatch({ type: ASYNC_MULTI })
+            dispatch({ type: ENABLE_BUTTONS })
+        }, 3000)
     }  
 }
 
 export function asyncDiv() {
     return function(dispatch) {
+        dispatch({ type: DISABLE_BUTTONS })
         setTimeout(() => {
-            return dispatch({ type: ASYNC_DIV })
-        }, 1000)
+            dispatch({ type: ASYNC_DIV })
+            dispatch({ type: ENABLE_BUTTONS })
+        }, 3000)
     }  
 }
 
